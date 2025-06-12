@@ -42,4 +42,14 @@ yarn-error.log*
 go.work
 
 # Binary
-bin/ 
+bin/
+
+# Environment variables
+.env
+backend/.env
+
+# Logs
+*.log
+
+# OS
+Thumbs.db 
