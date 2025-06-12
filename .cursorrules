@@ -1,0 +1,85 @@
+# GoghNight MVP 项目 Cursor Rules
+
+## 项目结构
+```
+goghnight/
+├── backend/          # Go后端项目
+│   ├── main.go       # 主入口文件
+│   ├── go.mod        # Go模块文件
+│   └── go.sum        # Go依赖锁定文件
+├── frontend/         # Next.js前端项目
+│   ├── pages/        # Next.js页面
+│   ├── styles/       # 样式文件
+│   ├── package.json  # Node.js依赖文件
+│   └── next.config.js # Next.js配置
+└── .cursorrules      # 本文件
+```
+
+## 开发规范
+
+### 后端开发 (Go)
+- **工作目录**: 始终在 `backend/` 目录下进行Go相关操作
+- **启动命令**: `cd backend && go run main.go`
+- **端口**: 8080
+- **API端点**: `/api/message`
+- **依赖管理**: 使用 `go mod tidy` 管理依赖
+
+### 前端开发 (Next.js)
+- **工作目录**: 始终在 `frontend/` 目录下进行Node.js相关操作
+- **启动命令**: `cd frontend && npm run dev`
+- **端口**: 3000
+- **构建工具**: Next.js + Tailwind CSS
+- **依赖管理**: 使用 `npm install` 安装依赖
+
+## 重要提醒
+
+### 启动服务时的常见错误
+1. **错误**: `CreateFile main.go: The system cannot find the file specified.`
+   - **原因**: 在根目录运行 `go run main.go`
+   - **解决**: 必须在 `backend/` 目录下运行
+
+2. **错误**: `Could not read package.json: Error: ENOENT: no such file or directory`
+   - **原因**: 在根目录运行 `npm run dev`
+   - **解决**: 必须在 `frontend/` 目录下运行
+
+### 正确的启动流程
+```bash
+# 启动后端 (在第一个终端)
+cd backend
+go run main.go
+
+# 启动前端 (在第二个终端)
+cd frontend
+npm run dev
+```
+
+### 访问地址
+- **前端**: http://localhost:3000
+- **后端API**: http://localhost:8080/api/message
+
+## 代码规范
+
+### Go代码
+- 使用 `gin` 框架处理HTTP请求
+- 使用 `rs/cors` 处理跨域请求
+- API返回JSON格式数据
+- 错误处理要完整
+
+### Next.js代码
+- 使用函数式组件
+- 使用 `useState` 和 `useEffect` 管理状态
+- 使用 `fetch` API调用后端
+- 使用Tailwind CSS进行样式设计
+- 错误处理和加载状态要完整
+
+## 调试技巧
+1. 检查端口是否被占用: `netstat -an | findstr ":3000"` 或 `netstat -an | findstr ":8080"`
+2. 检查进程是否运行: `tasklist | findstr "node.exe"` 或 `tasklist | findstr "go.exe"`
+3. 强制停止进程: `taskkill /F /IM node.exe` 或 `taskkill /F /IM go.exe`
+
+## 环境要求
+- **Go**: 1.21+
+- **Node.js**: 18+
+- **npm**: 9+
+
+记住：永远不要在项目根目录下运行 `go run main.go` 或 `npm run dev`！ 
