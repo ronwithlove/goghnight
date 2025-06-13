@@ -11,6 +11,9 @@
 SUPABASE_URL=your_supabase_project_url
 SUPABASE_ANON_KEY=your_supabase_anon_key
 
+# 前端配置
+FRONTEND_URL=https://your-vercel-domain.vercel.app
+
 # 服务器配置
 PORT=8080
 ```
@@ -24,7 +27,13 @@ PORT=8080
    - **Project URL**: 填入 `SUPABASE_URL`
    - **anon public**: 填入 `SUPABASE_ANON_KEY`
 
-### 3. 数据库表结构
+### 3. 配置前端URL
+
+- **本地开发**: `FRONTEND_URL=http://localhost:3000`
+- **Vercel部署**: `FRONTEND_URL=https://your-app.vercel.app`
+- **其他域名**: 填入你的前端域名
+
+### 4. 数据库表结构
 
 确保你的Supabase项目中已创建 `messages` 表：
 
@@ -54,8 +63,8 @@ go run main.go
 
 - 确保 `.env` 文件在 `backend` 目录下
 - 不要将 `.env` 文件提交到版本控制系统
-- 如果数据库连接失败，检查Supabase配置是否正确 
-
+- 如果数据库连接失败，检查Supabase配置是否正确
+- 如果CORS错误，检查 `FRONTEND_URL` 配置是否正确
 
 ## 启动
 

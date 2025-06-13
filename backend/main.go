@@ -42,9 +42,18 @@ func main() {
 		api.POST("/messages", createMessage(messageService))
 	}
 
+	// 获取允许的前端域名
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "http://localhost:3000" // 默认值
+	}
+
 	// 设置CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedOrigins: []string{
+			frontendURL,
+			"https://*.vercel.app", // 允许所有vercel.app子域名
+		},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,

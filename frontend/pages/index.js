@@ -15,7 +15,9 @@ export default function Home() {
       setLoading(true)
       setError('')
       
-      const response = await fetch('http://localhost:8080/api/message')
+      // 使用环境变量或默认值
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
+      const response = await fetch(`${apiBaseUrl}/api/message`)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
