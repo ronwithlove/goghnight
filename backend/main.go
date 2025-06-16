@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -43,17 +44,19 @@ func main() {
 	}
 
 	// 获取允许的前端域名
-	frontendURL := os.Getenv("FRONTEND_URL")
-	if frontendURL == "" {
-		frontendURL = "http://localhost:3000" // 默认值
+	frontendURLs := os.Getenv("FRONTEND_URL")
+	if frontendURLs == "" {
+		frontendURLs = "http://localhost:3000"
+	}
+	// 支持多个域名，逗号分隔
+	allowedOrigins := []string{"https://*.vercel.app"}
+	for _, url := range splitAndTrim(frontendURLs, ",") {
+		allowedOrigins = append(allowedOrigins, url)
 	}
 
 	// 设置CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{
-			frontendURL,
-			"https://*.vercel.app", // 允许所有vercel.app子域名
-		},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
@@ -145,4 +148,16 @@ func createMessage(service *services.MessageService) gin.HandlerFunc {
 			"data":    message,
 		})
 	}
+}
+
+// splitAndTrim 工具函数
+func splitAndTrim(s, sep string) []string {
+	var result []string
+	for _, part := range strings.Split(s, sep) {
+		trimmed := strings.TrimSpace(part)
+		if trimmed != "" {
+			result = append(result, trimmed)
+		}
+	}
+	return result
 }
